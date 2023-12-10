@@ -3,24 +3,21 @@ import Erc20TokenTransactionsTable from "@/components/adress-profile-page/ERC20T
 import TransactionsTable from "@/components/adress-profile-page/TransactionsTable";
 import { Copy } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useBalance } from "wagmi";
 
 export default function Page() {
   const params = useSearchParams();
   const address = params.get("address");
   const router = useRouter();
-  const { data, isLoading } = useBalance({
+  const { data } = useBalance({
     address: address as `0x${string}`,
   });
-
-  const [bal, setBal] = useState<typeof data>();
 
   useEffect(() => {
     if (!address) {
       router.push("/page-not-founted");
     }
-    setBal(data);
   }, [address]);
 
   return (
@@ -39,7 +36,7 @@ export default function Page() {
           </h1>
           <div className="border rounded-lg p-4 my-8">
             <h2 className="opacity-70 text-sm">ETH Balance</h2>
-            <span>{bal?.formatted} ETH</span>
+            <span>{data?.formatted} ETH</span>
           </div>
           <Tabs />
           <Tables />
